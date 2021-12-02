@@ -37,4 +37,31 @@ QQC2.Pane {
     height: 360
     anchors.centerIn: parent
     
+    ColumnLayout {
+        anchors.fill:parent
+        
+        QQC2.Label {
+            text:"Select resolution to mirror screens"
+        }
+        
+        QQC2.ComboBox {
+            Layout.alignment: Qt.AlignCenter
+            Layout.fillWidth: true
+            model: backend.outputsModel
+        }
+        
+        QQC2.CheckBox {
+            text: "Apply to all users"
+        }
+        
+        RowLayout {
+            QQC2.Button {
+                text: "Close"
+            }
+            
+            QQC2.Button {
+                text: "Apply"
+            }
+        }
+    }
 }

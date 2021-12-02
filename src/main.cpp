@@ -17,6 +17,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "proxy.hpp"
+
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QIcon>
@@ -27,6 +29,7 @@
 
 #include <iostream>
 
+using namespace lliurex::scrm;
 using namespace std;
 
 int main(int argc,char* argv[])
@@ -40,9 +43,11 @@ int main(int argc,char* argv[])
     view->setMinimumSize(QSize(400,360));
     view->setMaximumSize(QSize(400,360));
     
+    Proxy* proxy = new Proxy();
+    
     QQmlContext* ctxt = view->rootContext();
     QObject::connect(ctxt->engine(),&QQmlEngine::exit,&app,&QCoreApplication::exit);
-    
+    ctxt->setContextProperty("backend",proxy);
     view->setSource(QUrl(QStringLiteral("qrc:/ui.qml")));
     
     view->show();
