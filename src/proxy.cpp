@@ -41,7 +41,15 @@ struct optnode_t {
 
 static void add_node(optnode_t* node,Option* opt)
 {
-    if (opt->getValue() > node->me->getValue()) {
+    double delta = opt->getValue() - node->me->getValue();
+
+    if (std::abs(delta)<0.1) {
+
+        node->me->append(*opt);
+        return;
+    }
+
+    if (delta > 0.0) {
         if (node->right==nullptr) {
             optnode_t* q = new optnode_t;
             q->left=nullptr;
@@ -87,9 +95,11 @@ static void traverse_nodes(optnode_t* node,QList<QObject*>& list)
     if (node->right!=nullptr) {
         traverse_nodes(node->right,list);
     }
-    
-    list.push_back(node->me);
-    
+    if (node->me->match()) {
+        list.push_back(node->me);
+        qDebug()<<node->me->getName();
+    }
+
     if (node->left!=nullptr) {
         traverse_nodes(node->left,list);
     }
@@ -108,20 +118,25 @@ Option::Option(QString output,QString id,int width,int height,double refresh) : 
 QString Option::getName()
 {
     QString tmp=QString("%1x%2 %3 Hz").arg(m_width).arg(m_height).arg(m_refresh);
-    qDebug()<<tmp;
+    //qDebug()<<tmp;
     return tmp;
 }
 
 void Option::append(Option& option)
 {
-    m_outputs[1]=option.m_outputs[0];
-    m_ids[1]=option.m_ids[0];
-    m_count=2;
+    if (option.m_outputs[0]!=m_outputs[0]) {
+
+        m_outputs[1]=option.m_outputs[0];
+        m_ids[1]=option.m_ids[0];
+        m_count=2;
+
+        qDebug()<<"match "<<m_outputs[0]<<":"<<m_ids[0]<<" and "<<m_outputs[1]<<":"<<m_ids[1];
+    }
 }
 
 double Option::getValue()
 {
-    return m_width*m_refresh;
+    return (m_width*4.0)+(m_height*2.0)+(m_refresh);
 }
 
 Proxy::Proxy(QObject* parent) : QObject(parent)
@@ -169,9 +184,9 @@ Proxy::Proxy(QObject* parent) : QObject(parent)
                     
                     
                     QMap<QString,QVariant> size = qdbus_cast<QMap<QString,QVariant> >(mode["size"]);
-                    qDebug()<<"id:"<<id;
-                    qDebug()<<mode["refreshRate"];
-                    qDebug()<<size;
+                    //qDebug()<<"id:"<<id;
+                    //qDebug()<<mode["refreshRate"];
+                    //qDebug()<<size;
                     
                     Option* opt = new Option(outputName,id,
                                                    size["width"].value<long>(),
