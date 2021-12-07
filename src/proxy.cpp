@@ -33,6 +33,68 @@
 using namespace lliurex::scrm;
 using namespace std;
 
+struct optnode_t {
+    Option* me;
+    optnode_t* left;
+    optnode_t* right;
+} ;
+
+static void add_node(optnode_t* node,Option* opt)
+{
+    if (opt->getValue() > node->me->getValue()) {
+        if (node->right==nullptr) {
+            optnode_t* q = new optnode_t;
+            q->left=nullptr;
+            q->right=nullptr;
+            q->me=opt;
+            node->right = q;
+        }
+        else {
+            add_node(node->right,opt);
+        }
+    }
+    else {
+        
+        if (node->left==nullptr) {
+            optnode_t* q = new optnode_t;
+            q->left=nullptr;
+            q->right=nullptr;
+            q->me=opt;
+            node->left = q;
+        }
+        else {
+            add_node(node->left,opt);
+        }
+        
+    }
+}
+
+static void delete_nodes(optnode_t* node)
+{
+    if (node->left!=nullptr) {
+        delete_nodes(node->left);
+    }
+    
+    if (node->right!=nullptr) {
+        delete_nodes(node->right);
+    }
+    
+    delete node;
+}
+
+static void traverse_nodes(optnode_t* node,QList<QObject*>& list)
+{
+    if (node->right!=nullptr) {
+        traverse_nodes(node->right,list);
+    }
+    
+    list.push_back(node->me);
+    
+    if (node->left!=nullptr) {
+        traverse_nodes(node->left,list);
+    }
+}
+
 Option::Option(QString output,QString id,int width,int height,double refresh) : QObject(nullptr)
 {
     m_outputs[0]=output;
@@ -40,17 +102,26 @@ Option::Option(QString output,QString id,int width,int height,double refresh) : 
     m_width=width;
     m_height=height;
     m_refresh=refresh;
+    m_count=1;
+}
+
+QString Option::getName()
+{
+    QString tmp=QString("%1x%2 %3 Hz").arg(m_width).arg(m_height).arg(m_refresh);
+    qDebug()<<tmp;
+    return tmp;
 }
 
 void Option::append(Option& option)
 {
     m_outputs[1]=option.m_outputs[0];
     m_ids[1]=option.m_ids[0];
+    m_count=2;
 }
 
 double Option::getValue()
 {
-    return (m_width*m_height)+m_refresh;
+    return m_width*m_refresh;
 }
 
 Proxy::Proxy(QObject* parent) : QObject(parent)
@@ -79,12 +150,16 @@ Proxy::Proxy(QObject* parent) : QObject(parent)
         QList<QVariant> outputs = qdbus_cast<QList<QVariant> >(dict["outputs"]);
         
         m_outputs.clear();
+        m_options.clear();
+        
+        optnode_t* node = nullptr;
         
         for(iter = outputs.begin(); iter != outputs.end(); ++iter) {
             QMap<QString,QVariant> output = qdbus_cast<QMap<QString,QVariant> >(*iter);
             if (output["connected"].value<bool>()) {
-                qDebug()<<"connected "<<output["name"].value<QString>();
-                m_outputs.push_back(output["name"].value<QString>());
+                QString outputName = output["name"].value<QString>();
+                qDebug()<<"connected "<< outputName;
+                m_outputs.push_back(outputName);
                 QList<QVariant> modes = qdbus_cast<QList<QVariant> >(output["modes"]);
                 QList<QVariant>::iterator miter;
                 
@@ -92,7 +167,27 @@ Proxy::Proxy(QObject* parent) : QObject(parent)
                     QMap<QString,QVariant> mode = qdbus_cast<QMap<QString,QVariant> >(*miter);
                     QString id = mode["id"].value<QString>();
                     
+                    
                     QMap<QString,QVariant> size = qdbus_cast<QMap<QString,QVariant> >(mode["size"]);
+                    qDebug()<<"id:"<<id;
+                    qDebug()<<mode["refreshRate"];
+                    qDebug()<<size;
+                    
+                    Option* opt = new Option(outputName,id,
+                                                   size["width"].value<long>(),
+                                                   size["height"].value<long>(),
+                                                   mode["refreshRate"].value<double>());
+                    
+                    if (node == nullptr) {
+                        node = new optnode_t;
+                        node->me = opt;
+                        node->left=nullptr;
+                        node->right=nullptr;
+                    }
+                    else {
+                        add_node(node,opt);
+                    }
+                    
                     //qDebug()<<size["width"].value<int>()<<"x"<<size["height"].value<int>();
                     //qDebug()<<id<<":"<<mode["size"].value<QDBusArgument>().currentType();
                 }
@@ -100,6 +195,9 @@ Proxy::Proxy(QObject* parent) : QObject(parent)
             
         }
         
+        traverse_nodes(node,m_options);
+        
         emit outputsModelChanged();
+        emit optionsModelChanged();
     }
 }

@@ -47,7 +47,8 @@ QQC2.Pane {
         QQC2.ComboBox {
             Layout.alignment: Qt.AlignCenter
             Layout.fillWidth: true
-            model: backend.outputsModel
+            model: backend.optionsModel
+            textRole:"name"
         }
         
         QQC2.CheckBox {

@@ -35,21 +35,26 @@ namespace lliurex
             
             public:
                 
-            Q_PROPERTY(QString name MEMBER m_name CONSTANT)
+            Q_PROPERTY(QString name READ getName CONSTANT)
             
             Option(QString output,QString id,int width,int height,double refresh);
             
+            QString getName();
             void append(Option& option);
             
             double getValue();
+            
+            bool match() const
+            {
+                return m_count==2;
+            }
             
             protected:
             
             int m_width;
             int m_height;
             double m_refresh;
-            
-            QString m_name;
+            int m_count;
             
             QString m_outputs[2];
             QString m_ids[2];
@@ -63,16 +68,19 @@ namespace lliurex
             public:
                 
             Q_PROPERTY(QStringList outputsModel MEMBER m_outputs NOTIFY outputsModelChanged)
+            Q_PROPERTY(QList<QObject*> optionsModel MEMBER m_options NOTIFY optionsModelChanged)
             
             Proxy(QObject* parent = nullptr);
             
             protected:
             
             QStringList m_outputs;
+            QList<QObject*> m_options;
             
             signals:
                 
             void outputsModelChanged();
+            void optionsModelChanged();
             
         };
     }
