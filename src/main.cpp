@@ -40,8 +40,8 @@ int main(int argc,char* argv[])
     
     QQuickView *view = new QQuickView;
     view->setIcon(QIcon::fromTheme("monitor"));
-    view->setMinimumSize(QSize(400,360));
-    view->setMaximumSize(QSize(400,360));
+    view->setMinimumSize(QSize(460,460));
+    view->setMaximumSize(QSize(460,460));
     
     Proxy* proxy = new Proxy();
     
