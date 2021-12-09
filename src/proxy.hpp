@@ -49,6 +49,16 @@ namespace lliurex
                 return m_count==2;
             }
             
+            QString outputId(int index)
+            {
+                return m_ids[index];
+            }
+
+            QString outputName(int index)
+            {
+                return m_outputs[index];
+            }
+
             protected:
             
             int m_width;
@@ -72,6 +82,8 @@ namespace lliurex
             
             Proxy(QObject* parent = nullptr);
             
+            Q_INVOKABLE void setMode(Option* option);
+
             protected:
             
             QStringList m_outputs;

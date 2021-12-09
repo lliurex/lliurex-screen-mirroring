@@ -110,13 +110,16 @@ QQC2.Pane {
             Layout.alignment: Qt.AlignCenter
             Layout.fillWidth: true
             model: backend.outputsModel
-            
+            height: Kirigami.Units.largeSpacing*4
+
             delegate:QQC2.Label {
                     text: modelData
                 }
             
             
             onModelChanged: {
+                console.log(model);
+
                 if (model.length<2) {
                     msg.type=Kirigami.MessageType.Warning;
                     msg.text="Expected two outputs"
@@ -158,7 +161,8 @@ QQC2.Pane {
                 text: "Apply"
                 
                 onClicked: {
-                    console.log(cmbOptions.currentValue)
+                    console.log(cmbOptions.currentValue.name)
+                    backend.setMode(cmbOptions.currentValue);
                 }
             }
         }

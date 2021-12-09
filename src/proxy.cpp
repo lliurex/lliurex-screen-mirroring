@@ -216,3 +216,8 @@ Proxy::Proxy(QObject* parent) : QObject(parent)
         emit optionsModelChanged();
     }
 }
+
+void Proxy::setMode(Option* option)
+{
+    qDebug()<<"setting mode "<<option->outputName(0)<<":"<<option->outputId(0)<<" and "<<option->outputName(1)<<":"<<option->outputId(1);
+}
