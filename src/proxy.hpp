@@ -24,6 +24,7 @@
 #include <QList>
 #include <QString>
 #include <QStringList>
+#include <QDBusArgument>
 
 namespace lliurex
 {
@@ -88,6 +89,7 @@ namespace lliurex
             
             QStringList m_outputs;
             QList<QObject*> m_options;
+            QDBusArgument configuration;
             
             signals:
                 

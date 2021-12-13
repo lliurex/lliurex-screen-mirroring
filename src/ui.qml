@@ -103,7 +103,7 @@ QQC2.Pane {
         }
             
         QQC2.Label {
-            text:"Select resolution to mirror screens"
+            text:i18nd("lliurex-screen-mirroring","Select resolution to mirror screens");
         }
         
         ListView {
@@ -120,11 +120,23 @@ QQC2.Pane {
             onModelChanged: {
                 console.log(model);
 
-                if (model.length<2) {
-                    msg.type=Kirigami.MessageType.Warning;
-                    msg.text="Expected two outputs"
-                    msg.visible=true;
+                switch (model.length) {
+                    case 0:
+                        msg.type=Kirigami.MessageType.Error;
+                        msg.text=i18nd("lliurex-screen-mirroring","Failed to retrieve screen settings");
+                        msg.visible=true;
+                    break;
+                    
+                    case 1:
+                        msg.type=Kirigami.MessageType.Warning;
+                        msg.text=i18nd("lliurex-screen-mirroring","Expected two outputs");
+                        msg.visible=true;
+                    break;
+                    
+                    default:
+                        msg.visible=false;
                 }
+                
             }
         }
         
@@ -139,7 +151,7 @@ QQC2.Pane {
         
         QQC2.CheckBox {
             enabled: !main.locked
-            text: "Apply to all users"
+            text: i18nd("lliurex-screen-mirroring","Apply to all users");
         }
         
         Kirigami.InlineMessage {
@@ -154,11 +166,16 @@ QQC2.Pane {
         RowLayout {
             Layout.alignment: Qt.AlignRight
             QQC2.Button {
-                text: "Close"
+                text: i18nd("lliurex-screen-mirroring","Close");
+                onClicked: {
+                    Qt.exit(0);
+                }
             }
             
             QQC2.Button {
-                text: "Apply"
+                id: btnApply
+                text: i18nd("lliurex-screen-mirroring","Apply");
+                enabled: !msg.visible
                 
                 onClicked: {
                     console.log(cmbOptions.currentValue.name)
