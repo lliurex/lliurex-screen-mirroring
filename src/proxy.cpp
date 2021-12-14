@@ -236,11 +236,29 @@ void Proxy::setMode(Option* option)
         
         if (outputName==option->outputName(0)) {
             output["currentModeId"]=option->outputId(0);
+            output["pos"].toMap()["x"] = QVariant(0);
+            output["pos"].toMap()["y"] = QVariant(0);
+            
         }
         
         if (outputName==option->outputName(1)) {
             output["currentModeId"]=option->outputId(1);
+            output["pos"].toMap()["x"] = QVariant(0);
+            output["pos"].toMap()["y"] = QVariant(0);
         }
     }
-
+    
+    QDBusConnection connection = QDBusConnection::sessionBus();
+    
+    QDBusMessage msg = QDBusMessage::createMethodCall("org.kde.KScreen",
+                                                    "/backend",
+                                                    "org.kde.kscreen.Backend",
+                                                    "setConfig");
+    
+    QList<QVariant> args;
+    args.push_back(configuration.asVariant());
+    
+    msg.setArguments(args);
+    QDBusMessage reply = connection.call(msg);
+    
 }
