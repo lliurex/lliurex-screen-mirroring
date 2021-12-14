@@ -156,13 +156,13 @@ Proxy::Proxy(QObject* parent) : QObject(parent)
         QList<QVariant> args = reply.arguments();
         clog<<"reply "<<args.count()<<endl;
         
-        this->configuration = reply.arguments().at(0).value<QDBusArgument>();
+        QDBusArgument arg = reply.arguments().at(0).value<QDBusArgument>();
         
-        qDebug()<<configuration.currentType();
+        qDebug()<<arg.currentType();
         
-        QMap<QString,QVariant> dict = qdbus_cast<QMap<QString,QVariant> >(configuration);
+        configuration = qdbus_cast<QMap<QString,QVariant> >(arg);
         QList<QVariant>::iterator iter;
-        QList<QVariant> outputs = qdbus_cast<QList<QVariant> >(dict["outputs"]);
+        QList<QVariant> outputs = qdbus_cast<QList<QVariant> >(configuration["outputs"]);
         
         m_outputs.clear();
         m_options.clear();
@@ -220,32 +220,47 @@ Proxy::Proxy(QObject* parent) : QObject(parent)
 void Proxy::setMode(Option* option)
 {
     qDebug()<<"setting mode "<<option->outputName(0)<<":"<<option->outputId(0)<<" and "<<option->outputName(1)<<":"<<option->outputId(1);
-    
-    QMap<QString,QVariant> dict = qdbus_cast<QMap<QString,QVariant> >(configuration);
+    qDebug()<<"f1";
+
+qDebug()<<"f2";
     QList<QVariant>::iterator iter;
-    QList<QVariant> outputs = qdbus_cast<QList<QVariant> >(dict["outputs"]);
+    QList<QVariant> outputs = qdbus_cast<QList<QVariant> >(configuration["outputs"]);
+    QList<QVariant> tmp;
     
-    m_outputs.clear();
-    m_options.clear();
-    
+    qDebug()<<"f3";
+
     optnode_t* node = nullptr;
     
     for(iter = outputs.begin(); iter != outputs.end(); ++iter) {
         QMap<QString,QVariant> output = qdbus_cast<QMap<QString,QVariant> >(*iter);
+        qDebug()<<"fn";
         QString outputName = output["name"].value<QString>();
         
         if (outputName==option->outputName(0)) {
+            qDebug()<<"set 0";
             output["currentModeId"]=option->outputId(0);
             output["pos"].toMap()["x"] = QVariant(0);
             output["pos"].toMap()["y"] = QVariant(0);
+            tmp.push_back(output);
             
         }
         
         if (outputName==option->outputName(1)) {
+            qDebug()<<"set 1";
             output["currentModeId"]=option->outputId(1);
             output["pos"].toMap()["x"] = QVariant(0);
             output["pos"].toMap()["y"] = QVariant(0);
+            tmp.push_back(output);
         }
+    }
+
+    configuration["outputs"] = tmp;
+
+    outputs = qdbus_cast<QList<QVariant> >(configuration["outputs"]);
+    for(iter = outputs.begin(); iter != outputs.end(); ++iter) {
+        QMap<QString,QVariant> output = qdbus_cast<QMap<QString,QVariant> >(*iter);
+
+        qDebug()<<output["name"].toString()<<":"<<output["currentModeId"].toString();
     }
     
     QDBusConnection connection = QDBusConnection::sessionBus();
@@ -256,9 +271,9 @@ void Proxy::setMode(Option* option)
                                                     "setConfig");
     
     QList<QVariant> args;
-    args.push_back(configuration.asVariant());
+    args.push_back(configuration);
     
     msg.setArguments(args);
     QDBusMessage reply = connection.call(msg);
-    
+    qDebug()<<"called!";
 }
