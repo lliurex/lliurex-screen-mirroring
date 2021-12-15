@@ -184,7 +184,8 @@ Proxy::Proxy(QObject* parent) : QObject(parent)
                     
                     
                     QMap<QString,QVariant> size = qdbus_cast<QMap<QString,QVariant> >(mode["size"]);
-                    //qDebug()<<"id:"<<id;
+                    qDebug()<<"id:"<<id<<" "<<size["width"].value<long>()<<"x"<<size["height"].value<long>()<<size["refreshRate"].value<double>();
+                    
                     //qDebug()<<mode["refreshRate"];
                     //qDebug()<<size;
                     
@@ -220,24 +221,18 @@ Proxy::Proxy(QObject* parent) : QObject(parent)
 void Proxy::setMode(Option* option)
 {
     qDebug()<<"setting mode "<<option->outputName(0)<<":"<<option->outputId(0)<<" and "<<option->outputName(1)<<":"<<option->outputId(1);
-    qDebug()<<"f1";
 
-qDebug()<<"f2";
     QList<QVariant>::iterator iter;
     QList<QVariant> outputs = qdbus_cast<QList<QVariant> >(configuration["outputs"]);
     QList<QVariant> tmp;
     
-    qDebug()<<"f3";
-
     optnode_t* node = nullptr;
     
     for(iter = outputs.begin(); iter != outputs.end(); ++iter) {
         QMap<QString,QVariant> output = qdbus_cast<QMap<QString,QVariant> >(*iter);
-        qDebug()<<"fn";
         QString outputName = output["name"].value<QString>();
         
         if (outputName==option->outputName(0)) {
-            qDebug()<<"set 0";
             output["currentModeId"]=option->outputId(0);
             output["pos"].toMap()["x"] = QVariant(0);
             output["pos"].toMap()["y"] = QVariant(0);
@@ -246,10 +241,12 @@ qDebug()<<"f2";
         }
         
         if (outputName==option->outputName(1)) {
-            qDebug()<<"set 1";
             output["currentModeId"]=option->outputId(1);
-            output["pos"].toMap()["x"] = QVariant(0);
-            output["pos"].toMap()["y"] = QVariant(0);
+            QMap<QString,QVariant> pos;
+            pos["x"] = QVariant(0);
+            pos["y"] = QVariant(0);
+            output["pos"] = pos;
+            
             tmp.push_back(output);
         }
     }
