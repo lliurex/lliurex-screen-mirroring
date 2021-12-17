@@ -175,6 +175,8 @@ Proxy::Proxy(QObject* parent) : QObject(parent)
                 QString outputName = output["name"].value<QString>();
                 qDebug()<<"connected "<< outputName;
                 m_outputs.push_back(outputName);
+                currentId[outputName] = output["currentModeId"].value<QString>();
+                
                 QList<QVariant> modes = qdbus_cast<QList<QVariant> >(output["modes"]);
                 QList<QVariant>::iterator miter;
                 
@@ -220,6 +222,12 @@ Proxy::Proxy(QObject* parent) : QObject(parent)
 
 void Proxy::setMode(Option* option)
 {
+    if (!option->match()) {
+        emit error(1);
+        
+        return;
+    }
+    
     qDebug()<<"setting mode "<<option->outputName(0)<<":"<<option->outputId(0)<<" and "<<option->outputName(1)<<":"<<option->outputId(1);
 
     QList<QVariant>::iterator iter;
@@ -273,4 +281,21 @@ void Proxy::setMode(Option* option)
     msg.setArguments(args);
     QDBusMessage reply = connection.call(msg);
     qDebug()<<"called!";
+}
+
+void Proxy::revert()
+{
+    if (currentId.size()==2) {
+        Option opt(currentId.firstKey(),currentId.first(),0,0,0);
+        Option snd(currentId.lastKey(),currentId.last(),0,0,0);
+        opt.append(snd);
+        
+        setMode(&opt);
+    }
+}
+
+void Proxy::confirm(Option* option)
+{
+    currentId[option->outputName(0)]=option->outputId(0);
+    currentId[option->outputName(1)]=option->outputId(1);
 }

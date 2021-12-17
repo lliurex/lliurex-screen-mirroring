@@ -85,17 +85,21 @@ namespace lliurex
             Proxy(QObject* parent = nullptr);
             
             Q_INVOKABLE void setMode(Option* option);
-
+            Q_INVOKABLE void revert();
+            Q_INVOKABLE void confirm(Option* option);
+            
             protected:
             
             QStringList m_outputs;
             QList<QObject*> m_options;
             QMap<QString,QVariant> configuration;
+            QMap<QString,QString> currentId;
             
             signals:
                 
             void outputsModelChanged();
             void optionsModelChanged();
+            void error(int what);
             
         };
     }

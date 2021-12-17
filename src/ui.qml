@@ -41,8 +41,17 @@ QQC2.Pane {
     height: 460
     anchors.centerIn: parent
     
+    Connections {
+        target: backend
+        
+        function onError(what)
+        {
+            console.log("error:",what);
+        }
+    }
+    
     QQC2.Popup {
-        id: popup
+        id: n4dPopup
         x: 0
         y: 0
         width: 430
@@ -71,16 +80,94 @@ QQC2.Pane {
             
             onLogged: {
                 //console.log(ticket);
-                popup.close();
+                n4dPopup.close();
                 main.locked=false;
             }
             
             onCanceled: {
-                popup.close();
+                n4dPopup.close();
             }
             
             onAuthenticated: {
                 //console.log("passwd:",passwd)
+            }
+        }
+    }
+    
+    QQC2.Popup {
+        id: confirmPopup
+        x: 0
+        y: 0
+        width: 430
+        height: 130
+        modal: true
+        focus: true
+        anchors.centerIn: parent
+        closePolicy: QQC2.Popup.CloseOnEscape | QQC2.Popup.CloseOnPressOutsideParent
+        parent: QQC2.Overlay.overlay
+        property int timeout: 15
+        
+        onOpened: {
+            timeout=15;
+            timer.start();
+        }
+        
+        onClosed: {
+            timer.stop();
+        }
+        
+        Timer {
+            id: timer
+            interval: 1000
+            repeat: true
+            
+            
+            onTriggered: {
+                confirmPopup.timeout = confirmPopup.timeout - 1;
+                if (confirmPopup.timeout==0) {
+                    timer.stop();
+                    confirmPopup.close();
+                    backend.revert();
+                }
+            }
+        }
+        
+        QQC2.Overlay.modal: Rectangle {
+            color: "#AA000000"
+        }
+        
+        ColumnLayout {
+            anchors.fill:parent
+            QQC2.Label {
+                Layout.alignment: Qt.AlignCenter
+                text:i18nd("lliurex-screen-mirroring","Did it work?");
+            }
+            
+            QQC2.Label {
+                Layout.alignment: Qt.AlignCenter
+                text:i18nd("lliurex-screen-mirroring","Reverting in ")+confirmPopup.timeout;
+            }
+            
+            
+            RowLayout {
+                Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+                QQC2.Button {
+                    text:i18nd("lliurex-screen-mirroring","Revert");
+                    
+                    onClicked: {
+                        confirmPopup.close();
+                        backend.revert();
+                    }
+                }
+                
+                QQC2.Button {
+                    text:i18nd("lliurex-screen-mirroring","Apply");
+                    
+                    onClicked: {
+                        confirmPopup.close();
+                        backend.setMode(cmbOptions.currentValue);
+                    }
+                }
             }
         }
     }
@@ -98,7 +185,7 @@ QQC2.Pane {
             }
             
             onClicked: {
-                popup.open();
+                n4dPopup.open();
             }
         }
             
@@ -168,7 +255,8 @@ QQC2.Pane {
             QQC2.Button {
                 text: i18nd("lliurex-screen-mirroring","Close");
                 onClicked: {
-                    Qt.exit(0);
+                    confirmPopup.open();
+                    //Qt.exit(0);
                 }
             }
             
@@ -178,7 +266,7 @@ QQC2.Pane {
                 enabled: !msg.visible
                 
                 onClicked: {
-                    console.log(cmbOptions.currentValue.name)
+                    //console.log(cmbOptions.currentValue.name)
                     backend.setMode(cmbOptions.currentValue);
                 }
             }

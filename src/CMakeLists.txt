@@ -21,6 +21,6 @@ install(TARGETS llx-screen-mirroring RUNTIME DESTINATION bin)
 
 add_custom_target(
     po
-    COMMAND xgettext --keyword=T --language=C++ ${CMAKE_CURRENT_SOURCE_DIR}/harvesterstudentplugin.cpp ${CMAKE_CURRENT_SOURCE_DIR}/harvesterteacherplugin.cpp -o ${CMAKE_CURRENT_SOURCE_DIR}/messages.po
+    COMMAND xgettext -kde -ki18nd:2 ${CMAKE_CURRENT_SOURCE_DIR}/ui.qml -o ${CMAKE_CURRENT_SOURCE_DIR}/messages.po
     COMMENT "extracting po..." 
 )
