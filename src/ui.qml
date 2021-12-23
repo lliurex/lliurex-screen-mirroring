@@ -165,7 +165,8 @@ QQC2.Pane {
                     
                     onClicked: {
                         confirmPopup.close();
-                        backend.setMode(cmbOptions.currentValue);
+                        //TODO:N4D call here
+                        Qt.exit(0);
                     }
                 }
             }
@@ -238,7 +239,7 @@ QQC2.Pane {
         
         QQC2.CheckBox {
             //enabled: !main.locked
-            eanbled: false
+            enabled: false
             text: i18nd("lliurex-screen-mirroring","Apply to all users");
         }
         
@@ -256,8 +257,8 @@ QQC2.Pane {
             QQC2.Button {
                 text: i18nd("lliurex-screen-mirroring","Close");
                 onClicked: {
-                    confirmPopup.open();
-                    //Qt.exit(0);
+                    //confirmPopup.open();
+                    Qt.exit(0);
                 }
             }
             
@@ -269,6 +270,7 @@ QQC2.Pane {
                 onClicked: {
                     //console.log(cmbOptions.currentValue.name)
                     backend.setMode(cmbOptions.currentValue);
+                    confirmPopup.open();
                 }
             }
         }

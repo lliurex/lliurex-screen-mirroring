@@ -25,9 +25,6 @@
 #include <QList>
 #include <QMap>
 #include <QVariant>
-
-#include <iostream>
-
 #include <QDebug>
 
 using namespace lliurex::scrm;
@@ -150,11 +147,11 @@ Proxy::Proxy(QObject* parent) : QObject(parent)
     QDBusMessage reply = connection.call(msg);
     
     if (reply.type() == QDBusMessage::ErrorMessage) {
-        cerr<<"Error getting screen config"<<endl;
+        qCritical()<<"Error getting screen config";
     }
     else {
         QList<QVariant> args = reply.arguments();
-        clog<<"reply "<<args.count()<<endl;
+        qDebug()<<"reply "<<args.count();
         
         QDBusArgument arg = reply.arguments().at(0).value<QDBusArgument>();
         
@@ -280,7 +277,6 @@ void Proxy::setMode(Option* option)
     
     msg.setArguments(args);
     QDBusMessage reply = connection.call(msg);
-    qDebug()<<"called!";
 }
 
 void Proxy::revert()
