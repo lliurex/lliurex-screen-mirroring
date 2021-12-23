@@ -1,0 +1,12 @@
+Source: lliurex-screen-mirroring
+Section: misc
+Priority: standard
+Maintainer: Equipo LliureX <lliurex@gva.es>
+Build-Depends: debhelper (>= 7), cmake, extra-cmake-modules, libkf5coreaddons-dev, qtbase5-dev, qtdeclarative5-dev, libedupals-base-dev
+Standards-Version: 3.9.3
+
+Package: lliurex-screen-mirroring
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description:  Application to mirror screens
+ Screen mirroring application
