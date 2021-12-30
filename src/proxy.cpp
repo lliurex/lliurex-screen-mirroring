@@ -115,7 +115,6 @@ Option::Option(QString output,QString id,int width,int height,double refresh) : 
 QString Option::getName()
 {
     QString tmp=QString("%1x%2 %3 Hz").arg(m_width).arg(m_height).arg(m_refresh);
-    //qDebug()<<tmp;
     return tmp;
 }
 
@@ -151,7 +150,6 @@ Proxy::Proxy(QObject* parent) : QObject(parent)
     }
     else {
         QList<QVariant> args = reply.arguments();
-        qDebug()<<"reply "<<args.count();
         
         QDBusArgument arg = reply.arguments().at(0).value<QDBusArgument>();
         
@@ -185,9 +183,6 @@ Proxy::Proxy(QObject* parent) : QObject(parent)
                     QMap<QString,QVariant> size = qdbus_cast<QMap<QString,QVariant> >(mode["size"]);
                     qDebug()<<"id:"<<id<<" "<<size["width"].value<long>()<<"x"<<size["height"].value<long>()<<size["refreshRate"].value<double>();
                     
-                    //qDebug()<<mode["refreshRate"];
-                    //qDebug()<<size;
-                    
                     Option* opt = new Option(outputName,id,
                                                    size["width"].value<long>(),
                                                    size["height"].value<long>(),
@@ -203,18 +198,22 @@ Proxy::Proxy(QObject* parent) : QObject(parent)
                         add_node(node,opt);
                     }
                     
-                    //qDebug()<<size["width"].value<int>()<<"x"<<size["height"].value<int>();
-                    //qDebug()<<id<<":"<<mode["size"].value<QDBusArgument>().currentType();
                 }
             }
             
         }
         
         traverse_nodes(node,m_options);
-        
+        delete_nodes(node);
+
         emit outputsModelChanged();
         emit optionsModelChanged();
     }
+}
+
+Proxy::~Proxy()
+{
+
 }
 
 void Proxy::setMode(Option* option)
@@ -294,4 +293,14 @@ void Proxy::confirm(Option* option)
 {
     currentId[option->outputName(0)]=option->outputId(0);
     currentId[option->outputName(1)]=option->outputId(1);
+}
+
+void Proxy::applyToAll(QString ticket)
+{
+    string home = getenv("HOME");
+
+    string settings_path = home + "/.local/share/kscreen";
+    string outputs_path = home + "/.local/share/kscreen/outputs";
+    string control_path = home + "/.local/share/kscreen/control/configs";
+
 }
