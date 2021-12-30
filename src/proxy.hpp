@@ -83,10 +83,12 @@ namespace lliurex
             Q_PROPERTY(QList<QObject*> optionsModel MEMBER m_options NOTIFY optionsModelChanged)
             
             Proxy(QObject* parent = nullptr);
+            ~Proxy();
             
             Q_INVOKABLE void setMode(Option* option);
             Q_INVOKABLE void revert();
             Q_INVOKABLE void confirm(Option* option);
+            Q_INVOKABLE void applyToAll(QString ticket);
             
             protected:
             
