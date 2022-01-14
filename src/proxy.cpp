@@ -19,6 +19,11 @@
 
 #include "proxy.hpp"
 
+#include <n4d.hpp>
+#include <variant.hpp>
+#include <json.hpp>
+#include <filesystem.hpp>
+
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QDBusArgument>
@@ -27,8 +32,12 @@
 #include <QVariant>
 #include <QDebug>
 
+#include <fstream>
+
 using namespace lliurex::scrm;
+using namespace edupals;
 using namespace std;
+namespace fs=std::experimental::filesystem;
 
 struct optnode_t {
     Option* me;
@@ -297,10 +306,43 @@ void Proxy::confirm(Option* option)
 
 void Proxy::applyToAll(QString ticket)
 {
-    string home = getenv("HOME");
-
-    string settings_path = home + "/.local/share/kscreen";
-    string outputs_path = home + "/.local/share/kscreen/outputs";
-    string control_path = home + "/.local/share/kscreen/control/configs";
-
+    n4d::Ticket n4d_ticket(ticket.toStdString());
+    n4d::Client client (n4d_ticket);
+    
+    try {
+        client.call("MonitorSettings","saveMode", {"allusers"});
+        
+        string home = getenv("HOME");
+        
+        map<string,string> settings;
+        
+        settings["config"] = home + "/.local/share/kscreen";
+        settings["outputs"] = home + "/.local/share/kscreen/outputs";
+        settings["control"] = home + "/.local/share/kscreen/control/configs";
+        
+        for (auto pair : settings) {
+            auto files = filesystem::glob(pair.second + "/*");
+            
+            for (auto file : files) {
+                if (fs::is_directory(fs::path(file))) {
+                    continue;
+                }
+                
+                qDebug()<<file.filename().c_str();
+                
+                fstream fb;
+                fb.open(file.string(),ios::in);
+                
+                if(fb.is_open()) {
+                    variant::Variant configuration = json::load(fb);
+                    vector<variant::Variant> arguments = {configuration,variant::Variant(file.filename()),pair.first};
+                    
+                    client.call("MonitorSettings","saveResolution",arguments);
+                }
+            }
+        }
+    }
+    catch(std::exception& e) {
+        qDebug()<<e.what();
+    }
 }
