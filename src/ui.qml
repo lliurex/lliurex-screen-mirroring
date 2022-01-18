@@ -36,6 +36,7 @@ QQC2.Pane {
     id: main
     
     property bool locked:true
+    property string ticket:""
         
     width: 460
     height: 460
@@ -82,6 +83,7 @@ QQC2.Pane {
                 //console.log(ticket);
                 n4dPopup.close();
                 main.locked=false;
+                main.ticket=ticket;
             }
             
             onCanceled: {
@@ -165,7 +167,9 @@ QQC2.Pane {
                     
                     onClicked: {
                         confirmPopup.close();
-                        //TODO:N4D call here
+                        if (chkAll.checked) {
+                            backend.applyToAll(main.ticket);
+                        }
                         Qt.exit(0);
                     }
                 }
@@ -238,8 +242,8 @@ QQC2.Pane {
         }
         
         QQC2.CheckBox {
-            //enabled: !main.locked
-            enabled: false
+            id: chkAll
+            enabled: !main.locked
             text: i18nd("lliurex-screen-mirroring","Apply to all users");
         }
         
