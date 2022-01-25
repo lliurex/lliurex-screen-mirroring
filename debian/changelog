@@ -1,3 +1,9 @@
+lliurex-screen-mirroring (21.0.1.0) focal; urgency=medium
+
+  * Minor fix
+
+ -- Enrique Medina Gremaldos <quiqueiii@gmail.com>  Tue, 25 Jan 2022 10:47:24 +0100
+
 lliurex-screen-mirroring (21.0.0.0) focal; urgency=medium
 
   * Initial release.
