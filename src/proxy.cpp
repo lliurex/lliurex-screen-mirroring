@@ -343,6 +343,6 @@ void Proxy::applyToAll(QString ticket)
         }
     }
     catch(std::exception& e) {
-        qDebug()<<e.what();
+        qCritical()<<e.what();
     }
 }
