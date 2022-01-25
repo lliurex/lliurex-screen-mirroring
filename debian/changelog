@@ -1,3 +1,9 @@
+lliurex-screen-mirroring (21.0.1.1) focal; urgency=medium
+
+  * Added missing build dep
+
+ -- Enrique Medina Gremaldos <quiqueiii@gmail.com>  Tue, 25 Jan 2022 11:40:12 +0100
+
 lliurex-screen-mirroring (21.0.1.0) focal; urgency=medium
 
   * Minor fix
