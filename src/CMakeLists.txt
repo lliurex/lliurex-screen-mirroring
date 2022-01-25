@@ -11,11 +11,12 @@ set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -fexceptions")
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -foperator-names")
 
 find_package(EdupalsBase REQUIRED)
+find_package(EdupalsN4D REQUIRED)
 
 include(KDEInstallDirs)
 
 add_executable(llx-screen-mirroring proxy.cpp main.cpp resources.qrc)
-target_link_libraries(llx-screen-mirroring Qt5::Core Qt5::Widgets Qt5::Quick Qt5::DBus Edupals::Base)
+target_link_libraries(llx-screen-mirroring Qt5::Core Qt5::Widgets Qt5::Quick Qt5::DBus Edupals::Base Edupals::N4D)
 
 install(TARGETS llx-screen-mirroring RUNTIME DESTINATION bin)
 
