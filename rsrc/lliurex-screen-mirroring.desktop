@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Icon=monitor
+Name=Lliurex Screen Mirroring
+Comment=This wizard allows to mirror two monitors
+Exec=/usr/bin/llx-screen-mirroring
+OnlyShowIn=KDE;
+Terminal=false
+Type=Application
+NoDisplay=false
+Categories=System;Settings;
+
+
