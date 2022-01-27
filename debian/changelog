@@ -1,3 +1,9 @@
+lliurex-screen-mirroring (21.0.2.0) focal; urgency=medium
+
+  * Added a xdg desktop
+
+ -- Enrique Medina Gremaldos <quiqueiii@gmail.com>  Thu, 27 Jan 2022 12:25:23 +0100
+
 lliurex-screen-mirroring (21.0.1.1) focal; urgency=medium
 
   * Added missing build dep
