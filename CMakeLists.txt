@@ -14,5 +14,5 @@ foreach(lang ${langs})
 endforeach()
 
 install(FILES rsrc/lliurex-screen-mirroring.desktop
-    DESTINATION usr/share/applications/
+    DESTINATION share/applications/
 )
