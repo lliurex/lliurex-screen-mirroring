@@ -1,3 +1,9 @@
+lliurex-screen-mirroring (21.0.1.0) focal; urgency=medium
+
+  * Fixed desktop install path
+
+ -- Enrique Medina Gremaldos <quiqueiii@gmail.com>  Fri, 11 Feb 2022 10:01:52 +0100
+
 lliurex-screen-mirroring (21.0.2.0) focal; urgency=medium
 
   * Added a xdg desktop
