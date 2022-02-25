@@ -12,3 +12,7 @@ foreach(lang ${langs})
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${lang}.gmo DESTINATION
             share/locale/${lang}/LC_MESSAGES/ RENAME lliurex-screen-mirroring.mo)
 endforeach()
+
+install(FILES rsrc/lliurex-screen-mirroring.desktop
+    DESTINATION share/applications/
+)
