@@ -243,7 +243,7 @@ QQC2.Pane {
         
         QQC2.CheckBox {
             id: chkAll
-            enabled: !main.locked
+            enabled: false //!main.locked
             text: i18nd("lliurex-screen-mirroring","Apply to all users");
         }
         

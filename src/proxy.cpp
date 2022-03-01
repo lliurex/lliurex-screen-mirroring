@@ -306,6 +306,7 @@ void Proxy::confirm(Option* option)
 
 void Proxy::applyToAll(QString ticket)
 {
+    /*
     n4d::Ticket n4d_ticket(ticket.toStdString());
     n4d::Client client (n4d_ticket);
     
@@ -345,4 +346,5 @@ void Proxy::applyToAll(QString ticket)
     catch(std::exception& e) {
         qCritical()<<e.what();
     }
+    */
 }
