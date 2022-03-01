@@ -1,3 +1,9 @@
+lliurex-screen-mirroring (21.0.3.0~bionic0) bionic; urgency=medium
+
+  * Disabled n4d features on bionic branch
+
+ -- Enrique Medina Gremaldos <quiqueiii@gmail.com>  Tue, 01 Mar 2022 11:00:16 +0100
+
 lliurex-screen-mirroring (21.0.3.0) bionic; urgency=medium
 
   * master tag: 3f5afc6e3ff66bc16abc56612c9e94ad700d3802
