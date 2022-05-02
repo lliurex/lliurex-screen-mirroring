@@ -1,3 +1,9 @@
+lliurex-screen-mirroring (21.0.4.0) focal; urgency=medium
+
+  * Fixed primary screen not moving to origin
+
+ -- Enrique Medina Gremaldos <quiqueiii@gmail.com>  Mon, 02 May 2022 10:38:53 +0200
+
 lliurex-screen-mirroring (21.0.3.0) focal; urgency=medium
 
   * Fixed desktop install path
