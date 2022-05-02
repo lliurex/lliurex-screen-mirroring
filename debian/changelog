@@ -1,3 +1,9 @@
+lliurex-screen-mirroring (21.0.4.0~bionic0) bionic; urgency=medium
+
+  * Fixed bug with primary screen not moved to origin
+
+ -- Enrique Medina Gremaldos <quiqueiii@gmail.com>  Mon, 02 May 2022 10:23:43 +0200
+
 lliurex-screen-mirroring (21.0.3.1~bionic0) bionic; urgency=medium
 
   * Disabled n4d features on bionic branch
