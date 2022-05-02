@@ -233,7 +233,7 @@ void Proxy::setMode(Option* option)
         return;
     }
     
-    qDebug()<<"setting mode "<<option->outputName(0)<<":"<<option->outputId(0)<<" and "<<option->outputName(1)<<":"<<option->outputId(1);
+    qInfo()<<"setting mode "<<option->outputName(0)<<":"<<option->outputId(0)<<" and "<<option->outputName(1)<<":"<<option->outputId(1);
 
     QList<QVariant>::iterator iter;
     QList<QVariant> outputs = qdbus_cast<QList<QVariant> >(configuration["outputs"]);
@@ -247,9 +247,12 @@ void Proxy::setMode(Option* option)
         
         if (outputName==option->outputName(0)) {
             output["currentModeId"]=option->outputId(0);
-            output["pos"].toMap()["x"] = QVariant(0);
-            output["pos"].toMap()["y"] = QVariant(0);
+            QMap<QString,QVariant> pos;
+            pos["x"] = QVariant(0);
+            pos["y"] = QVariant(0);
+            output["pos"] = pos;
             tmp.push_back(output);
+            qInfo()<<"Output"<<outputName<<"moved to "<<output["pos"].toMap()["x"]<<" "<<output["pos"].toMap()["y"];
             
         }
         
@@ -261,6 +264,8 @@ void Proxy::setMode(Option* option)
             output["pos"] = pos;
             
             tmp.push_back(output);
+            qInfo()<<"Output"<<outputName<<"moved to "<<output["pos"].toMap()["x"]<<" "<<output["pos"].toMap()["y"];
+
         }
     }
 
