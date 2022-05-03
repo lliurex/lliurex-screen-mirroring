@@ -21,15 +21,15 @@
  *
  */
 import Edupals.N4D 1.0 as N4D
-import Edupals.N4D.Agent 1.0 as N4DAgent
+//import Edupals.N4D.Agent 1.0 as N4DAgent
 
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.kirigami 2.16 as Kirigami
+import org.kde.kirigami 2.12 as Kirigami
 
 import QtQuick 2.6
 import QtQuick.Controls 2.6 as QQC2
 import QtQuick.Window 2.6 
-import QtQuick.Layouts 1.15
+import QtQuick.Layouts 1.12
 import QtQuick.Dialogs 1.0
 
 QQC2.Pane {
@@ -66,7 +66,7 @@ QQC2.Pane {
         QQC2.Overlay.modal: Rectangle {
             color: "#AA000000"
         }
-        
+        /*
         N4DAgent.Login {
             id: loginWidget
             
@@ -93,7 +93,7 @@ QQC2.Pane {
             onAuthenticated: {
                 //console.log("passwd:",passwd)
             }
-        }
+        } */
     }
     
     QQC2.Popup {
@@ -181,6 +181,7 @@ QQC2.Pane {
         anchors.fill:parent
         
         QQC2.Button {
+            enabled:false
             Layout.alignment: Qt.AlignRight
             Layout.minimumWidth: Kirigami.Units.iconSizes.medium
             
