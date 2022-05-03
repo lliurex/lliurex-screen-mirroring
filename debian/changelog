@@ -1,3 +1,9 @@
+lliurex-screen-mirroring (21.0.4.0~bionic1) bionic; urgency=medium
+
+  * Using qml import versions safe for bionic
+
+ -- Enrique Medina Gremaldos <quiqueiii@gmail.com>  Tue, 03 May 2022 11:25:49 +0200
+
 lliurex-screen-mirroring (21.0.4.0~bionic0) bionic; urgency=medium
 
   * Fixed bug with primary screen not moved to origin
