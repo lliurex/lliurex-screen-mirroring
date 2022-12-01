@@ -1,3 +1,9 @@
+lliurex-screen-mirroring (21.1.0.0) lliurex22; urgency=medium
+
+  * Disabled apply to all feature
+
+ -- Enrique Medina Gremaldos <quiqueiii@gmail.com>  Thu, 01 Dec 2022 10:43:27 +0100
+
 lliurex-screen-mirroring (21.0.4.0) focal; urgency=medium
 
   * Fixed primary screen not moving to origin
