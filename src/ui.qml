@@ -180,6 +180,7 @@ QQC2.Pane {
     ColumnLayout {
         anchors.fill:parent
         
+        /*
         QQC2.Button {
             Layout.alignment: Qt.AlignRight
             Layout.minimumWidth: Kirigami.Units.iconSizes.medium
@@ -193,7 +194,8 @@ QQC2.Pane {
                 n4dPopup.open();
             }
         }
-            
+        */
+
         QQC2.Label {
             text:i18nd("lliurex-screen-mirroring","Select resolution to mirror screens");
         }
@@ -240,13 +242,13 @@ QQC2.Pane {
             textRole:"name"
             
         }
-        
+        /*
         QQC2.CheckBox {
             id: chkAll
             enabled: !main.locked
             text: i18nd("lliurex-screen-mirroring","Apply to all users");
         }
-        
+        */
         Kirigami.InlineMessage {
             Layout.alignment: Qt.AlignCenter
             Layout.fillWidth:true
@@ -257,7 +259,8 @@ QQC2.Pane {
         }
         
         RowLayout {
-            Layout.alignment: Qt.AlignRight
+            Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+
             QQC2.Button {
                 text: i18nd("lliurex-screen-mirroring","Close");
                 onClicked: {
