@@ -26,6 +26,7 @@
 #include <QStringList>
 #include <QVariant>
 #include <QMap>
+#include <QPoint>
 
 namespace lliurex
 {
@@ -85,7 +86,7 @@ namespace lliurex
             Proxy(QObject* parent = nullptr);
             ~Proxy();
             
-            Q_INVOKABLE void setMode(Option* option);
+            Q_INVOKABLE void setMode(Option* option,bool revert = false);
             Q_INVOKABLE void revert();
             Q_INVOKABLE void confirm(Option* option);
             Q_INVOKABLE void applyToAll(QString ticket);
@@ -96,6 +97,7 @@ namespace lliurex
             QList<QObject*> m_options;
             QMap<QString,QVariant> configuration;
             QMap<QString,QString> currentId;
+            QMap<QString,QPoint> currentPos;
             
             signals:
                 

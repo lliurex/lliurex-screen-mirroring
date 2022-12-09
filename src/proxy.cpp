@@ -180,7 +180,10 @@ Proxy::Proxy(QObject* parent) : QObject(parent)
                 qDebug()<<"connected "<< outputName;
                 m_outputs.push_back(outputName);
                 currentId[outputName] = output["currentModeId"].value<QString>();
-                
+
+                QMap<QString,QVariant> pos = qdbus_cast<QMap<QString,QVariant> >(output["pos"]);
+                currentPos[outputName] = QPoint(pos["x"].value<int>(),pos["y"].value<int>());
+                qDebug()<<"Position "<<outputName<<" "<<currentPos[outputName];
                 QList<QVariant> modes = qdbus_cast<QList<QVariant> >(output["modes"]);
                 QList<QVariant>::iterator miter;
                 
@@ -225,7 +228,7 @@ Proxy::~Proxy()
 
 }
 
-void Proxy::setMode(Option* option)
+void Proxy::setMode(Option* option,bool revert)
 {
     if (!option->match()) {
         emit error(1);
@@ -248,8 +251,14 @@ void Proxy::setMode(Option* option)
         if (outputName==option->outputName(0)) {
             output["currentModeId"]=option->outputId(0);
             QMap<QString,QVariant> pos;
-            pos["x"] = QVariant(0);
-            pos["y"] = QVariant(0);
+            if (revert) {
+                pos["x"] = currentPos[outputName].x();
+                pos["y"] = currentPos[outputName].y();
+            }
+            else {
+                pos["x"] = QVariant(0);
+                pos["y"] = QVariant(0);
+            }
             output["pos"] = pos;
             tmp.push_back(output);
             qInfo()<<"Output"<<outputName<<"moved to "<<output["pos"].toMap()["x"]<<" "<<output["pos"].toMap()["y"];
@@ -259,8 +268,14 @@ void Proxy::setMode(Option* option)
         if (outputName==option->outputName(1)) {
             output["currentModeId"]=option->outputId(1);
             QMap<QString,QVariant> pos;
-            pos["x"] = QVariant(0);
-            pos["y"] = QVariant(0);
+            if (revert) {
+                pos["x"] = currentPos[outputName].x();
+                pos["y"] = currentPos[outputName].y();
+            }
+            else {
+                pos["x"] = QVariant(0);
+                pos["y"] = QVariant(0);
+            }
             output["pos"] = pos;
             
             tmp.push_back(output);
@@ -299,7 +314,7 @@ void Proxy::revert()
         Option snd(currentId.lastKey(),currentId.last(),0,0,0);
         opt.append(snd);
         
-        setMode(&opt);
+        setMode(&opt,true);
     }
 }
 
