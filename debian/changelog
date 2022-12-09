@@ -1,3 +1,9 @@
+lliurex-screen-mirroring (21.2.0.0) bionic; urgency=medium
+
+  * Revert action now moves outputs back to its position (x,y)
+
+ -- Enrique Medina Gremaldos <quiqueiii@gmail.com>  Fri, 09 Dec 2022 16:28:04 +0100
+
 lliurex-screen-mirroring (21.1.0.0) bionic; urgency=medium
 
   * Disabled apply to all feature
