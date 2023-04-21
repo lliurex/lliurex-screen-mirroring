@@ -1,0 +1,55 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-12-22 11:34+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Enrique Medina Gremaldos <quiqueiii@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /home/quique/workspace/lliurex-screen-mirroring/src/ui.qml:143
+msgid "Did it work?"
+msgstr "Ha funcionat?"
+
+#: /home/quique/workspace/lliurex-screen-mirroring/src/ui.qml:148
+msgid "Reverting in "
+msgstr "S'està revertint en "
+
+#: /home/quique/workspace/lliurex-screen-mirroring/src/ui.qml:155
+msgid "Revert"
+msgstr "Reverteix"
+
+#: /home/quique/workspace/lliurex-screen-mirroring/src/ui.qml:164
+#: /home/quique/workspace/lliurex-screen-mirroring/src/ui.qml:265
+msgid "Apply"
+msgstr "Aplica"
+
+#: /home/quique/workspace/lliurex-screen-mirroring/src/ui.qml:193
+msgid "Select resolution to mirror screens"
+msgstr "Selecciona la resolució per a replicar pantalles"
+
+#: /home/quique/workspace/lliurex-screen-mirroring/src/ui.qml:213
+msgid "Failed to retrieve screen settings"
+msgstr "S'ha produït un error en intentar llegir la configuració de pantalla"
+
+#: /home/quique/workspace/lliurex-screen-mirroring/src/ui.qml:219
+msgid "Expected two outputs"
+msgstr "S'esperaven dues eixides"
+
+#: /home/quique/workspace/lliurex-screen-mirroring/src/ui.qml:241
+msgid "Apply to all users"
+msgstr "Aplica a tots els usuaris"
+
+#: /home/quique/workspace/lliurex-screen-mirroring/src/ui.qml:256
+msgid "Close"
+msgstr "Tanca"
