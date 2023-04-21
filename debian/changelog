@@ -1,3 +1,9 @@
+lliurex-screen-mirroring (21.2.1.0) focal; urgency=medium
+
+  * Added valencian locale
+
+ -- Enrique Medina Gremaldos <quiqueiii@gmail.com>  Fri, 21 Apr 2023 10:00:26 +0200
+
 lliurex-screen-mirroring (21.2.0.0) lliurex22; urgency=medium
 
   * Revert action moves back output to its position (x,y)
