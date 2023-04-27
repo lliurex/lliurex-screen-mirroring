@@ -3,7 +3,7 @@ project(lliurex-screen-mirroring)
 
 add_subdirectory(src)
 
-set(langs es)
+set(langs es ca@valencia)
 find_package(Intl)
 find_package(Gettext)
 
