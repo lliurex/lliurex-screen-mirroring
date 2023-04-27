@@ -1,3 +1,9 @@
+lliurex-screen-mirroring (21.2.1.1) focal; urgency=medium
+
+  * Modify CMake to build valencian translations
+
+ -- Raul Rodrigo Segura <raurodse@gmail.com>  Thu, 27 Apr 2023 19:35:05 +0200
+
 lliurex-screen-mirroring (21.2.1.0) focal; urgency=medium
 
   * Added valencian locale
