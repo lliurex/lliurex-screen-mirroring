@@ -341,7 +341,7 @@ void Proxy::applyToAll(QString ticket)
         settings["control"] = home + "/.local/share/kscreen/control/configs";
         
         for (auto pair : settings) {
-            auto files = filesystem::glob(pair.second + "/*");
+            auto files = edupals::filesystem::glob(pair.second + "/*");
             
             for (auto file : files) {
                 if (fs::is_directory(fs::path(file))) {
@@ -354,8 +354,8 @@ void Proxy::applyToAll(QString ticket)
                 fb.open(file.string(),ios::in);
                 
                 if(fb.is_open()) {
-                    variant::Variant configuration = json::load(fb);
-                    vector<variant::Variant> arguments = {configuration,variant::Variant(file.filename()),pair.first};
+                    edupals::variant::Variant configuration = json::load(fb);
+                    vector<edupals::variant::Variant> arguments = {configuration,edupals::variant::Variant(file.filename()),pair.first};
                     
                     client.call("MonitorSettings","saveResolution",arguments);
                 }
