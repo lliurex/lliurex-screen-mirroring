@@ -147,12 +147,53 @@ double Option::getValue()
 Proxy::Proxy(QObject* parent) : QObject(parent)
 {
     QDBusConnection connection = QDBusConnection::sessionBus();
-    
-    QDBusMessage msg = QDBusMessage::createMethodCall("org.kde.KScreen",
+    QDBusMessage msg;
+    QDBusMessage reply;
+
+    msg = QDBusMessage::createMethodCall("org.kde.KScreen",
+                                         "/",
+                                         "org.kde.KScreen",
+                                         "backend");
+    reply = connection.call(msg);
+
+    if (reply.type() == QDBusMessage::ErrorMessage) {
+        qCritical()<<"Error getting current backend";
+    }
+    else {
+        QList<QVariant> args = reply.arguments();
+
+        QDBusArgument arg = reply.arguments().at(0).value<QDBusArgument>();
+
+        qDebug()<<arg.currentType();
+        QString value = qdbus_cast<QString >(arg);
+
+        if (value.isEmpty()) {
+            qInfo()<<"No backend selected";
+
+            msg = QDBusMessage::createMethodCall("org.kde.KScreen",
+                                                 "/",
+                                                 "org.kde.KScreen",
+                                                 "requestBackend");
+
+            QString backendName = "kwayland";
+            QVariantMap backendSettings;
+
+            msg.setArguments(QVariantList()<<backendName<<backendSettings);
+            reply = connection.call(msg);
+
+            if (reply.type() == QDBusMessage::ErrorMessage) {
+                qCritical()<<"Error requesting backend";
+            }
+
+        }
+    }
+
+
+    msg = QDBusMessage::createMethodCall("org.kde.KScreen",
                                                     "/backend",
                                                     "org.kde.kscreen.Backend",
                                                     "getConfig");
-    QDBusMessage reply = connection.call(msg);
+    reply = connection.call(msg);
     
     if (reply.type() == QDBusMessage::ErrorMessage) {
         qCritical()<<"Error getting screen config";
