@@ -175,7 +175,7 @@ Proxy::Proxy(QObject* parent) : QObject(parent)
                                                  "org.kde.KScreen",
                                                  "requestBackend");
 
-            QString backendName = "kwayland";
+            QString backendName = "";
             QVariantMap backendSettings;
 
             msg.setArguments(QVariantList()<<backendName<<backendSettings);
@@ -184,10 +184,8 @@ Proxy::Proxy(QObject* parent) : QObject(parent)
             if (reply.type() == QDBusMessage::ErrorMessage) {
                 qCritical()<<"Error requesting backend";
             }
-
         }
     }
-
 
     msg = QDBusMessage::createMethodCall("org.kde.KScreen",
                                                     "/backend",
