@@ -1,3 +1,10 @@
+lliurex-screen-mirroring (25.0.0.0) noble; urgency=medium
+
+  * Bumped to lliurex 25
+  * Fixed code to request kscreen backend if not available
+
+ -- Enrique Medina Gremaldos <quique@necos.es>  Tue, 16 Jun 2026 08:03:04 +0200
+
 lliurex-screen-mirroring (21.2.1.1) focal; urgency=medium
 
   * Modify CMake to build valencian translations
