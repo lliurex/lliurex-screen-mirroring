@@ -147,12 +147,51 @@ double Option::getValue()
 Proxy::Proxy(QObject* parent) : QObject(parent)
 {
     QDBusConnection connection = QDBusConnection::sessionBus();
-    
-    QDBusMessage msg = QDBusMessage::createMethodCall("org.kde.KScreen",
+    QDBusMessage msg;
+    QDBusMessage reply;
+
+    msg = QDBusMessage::createMethodCall("org.kde.KScreen",
+                                         "/",
+                                         "org.kde.KScreen",
+                                         "backend");
+    reply = connection.call(msg);
+
+    if (reply.type() == QDBusMessage::ErrorMessage) {
+        qCritical()<<"Error getting current backend";
+    }
+    else {
+        QList<QVariant> args = reply.arguments();
+
+        QDBusArgument arg = reply.arguments().at(0).value<QDBusArgument>();
+
+        qDebug()<<arg.currentType();
+        QString value = qdbus_cast<QString >(arg);
+
+        if (value.isEmpty()) {
+            qInfo()<<"No backend selected";
+
+            msg = QDBusMessage::createMethodCall("org.kde.KScreen",
+                                                 "/",
+                                                 "org.kde.KScreen",
+                                                 "requestBackend");
+
+            QString backendName = "";
+            QVariantMap backendSettings;
+
+            msg.setArguments(QVariantList()<<backendName<<backendSettings);
+            reply = connection.call(msg);
+
+            if (reply.type() == QDBusMessage::ErrorMessage) {
+                qCritical()<<"Error requesting backend";
+            }
+        }
+    }
+
+    msg = QDBusMessage::createMethodCall("org.kde.KScreen",
                                                     "/backend",
                                                     "org.kde.kscreen.Backend",
                                                     "getConfig");
-    QDBusMessage reply = connection.call(msg);
+    reply = connection.call(msg);
     
     if (reply.type() == QDBusMessage::ErrorMessage) {
         qCritical()<<"Error getting screen config";
@@ -341,7 +380,7 @@ void Proxy::applyToAll(QString ticket)
         settings["control"] = home + "/.local/share/kscreen/control/configs";
         
         for (auto pair : settings) {
-            auto files = filesystem::glob(pair.second + "/*");
+            auto files = edupals::filesystem::glob(pair.second + "/*");
             
             for (auto file : files) {
                 if (fs::is_directory(fs::path(file))) {
@@ -354,8 +393,8 @@ void Proxy::applyToAll(QString ticket)
                 fb.open(file.string(),ios::in);
                 
                 if(fb.is_open()) {
-                    variant::Variant configuration = json::load(fb);
-                    vector<variant::Variant> arguments = {configuration,variant::Variant(file.filename()),pair.first};
+                    edupals::variant::Variant configuration = json::load(fb);
+                    vector<edupals::variant::Variant> arguments = {configuration,edupals::variant::Variant(file.filename()),pair.first};
                     
                     client.call("MonitorSettings","saveResolution",arguments);
                 }
