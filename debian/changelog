@@ -1,3 +1,9 @@
+lliurex-screen-mirroring (23.0.0.0) jammy; urgency=medium
+
+  * Initial release for jammy
+  
+ -- Juan Ramon Pelegrina <juapesai@hotmail.com>  Tue, 30 Jun 2026 14:14:53 +0200
+
 lliurex-screen-mirroring (21.2.1.1) focal; urgency=medium
 
   * Modify CMake to build valencian translations
